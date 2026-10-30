@@ -2,9 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { experiences } from '@/lib/data';
+import { experiences, education } from '@/lib/data';
 import { Card, Badge } from '@/components/ui';
-import { Briefcase, Building2, Calendar, CheckCircle, ArrowRight, Code, Database, Server, Zap } from 'lucide-react';
+import { Briefcase, Building2, Calendar, CheckCircle, Code, Database, Server, Zap, GraduationCap } from 'lucide-react';
 
 export function ExperienceSection() {
   return (
@@ -86,7 +86,7 @@ export function ExperienceSection() {
                   <div className="flex items-center gap-2 text-sm text-text-tertiary flex-wrap">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {exp.startDate} – {exp.endDate || 'Present'}
+                      {exp.startDate} – {exp.endDate}
                     </span>
                     <Badge variant={exp.type === 'internship' ? 'secondary' : 'primary'} size="sm">
                       {exp.type}
@@ -169,19 +169,19 @@ export function ExperienceSection() {
           >
             <div className="absolute left-4 top-10">
               <div className="w-8 h-8 rounded-full border-4 border-bg-primary flex items-center justify-center z-10 bg-gradient-to-br from-accent-tertiary to-accent-secondary">
-                <Server className="w-5 h-5 text-bg-primary" />
+                <GraduationCap className="w-5 h-5 text-bg-primary" />
               </div>
             </div>
 
             <Card variant="bordered">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-accent-tertiary/10 flex items-center justify-center">
-                  <Server className="w-6 h-6 text-accent-tertiary" />
+                  <GraduationCap className="w-6 h-6 text-accent-tertiary" />
                 </div>
                 <div>
-                  <h3 className="text-fluid-lg font-semibold text-text-primary">B.Tech Computer Science & Engineering</h3>
-                  <p className="text-accent-tertiary font-medium">IIT (ISM) Dhanbad</p>
-                  <p className="text-text-tertiary text-sm">Expected May 2027 • Dhanbad, Jharkhand</p>
+                  <h3 className="text-fluid-lg font-semibold text-text-primary">{education.degree}</h3>
+                  <p className="text-accent-tertiary font-medium">{education.institution}</p>
+                  <p className="text-text-tertiary text-sm">Expected {education.expectedGraduation} • {education.location}</p>
                 </div>
               </div>
             </Card>

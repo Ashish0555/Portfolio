@@ -20,7 +20,7 @@ import {
   X,
 } from 'lucide-react';
 
-type FilterValue = 'all' | 'backend' | 'fullstack' | 'ai-ml' | 'infrastructure';
+type FilterValue = 'all' | 'backend' | 'ai-ml';
 
 export function ProjectsSection() {
   const [expandedProject, setExpandedProject] = useState<string | null>(null);
@@ -29,9 +29,7 @@ export function ProjectsSection() {
   const categories: { value: FilterValue; label: string; count: number }[] = [
     { value: 'all', label: 'All', count: projects.length },
     { value: 'backend', label: 'Backend', count: projects.filter(p => p.category === 'backend').length },
-    { value: 'fullstack', label: 'Full Stack', count: projects.filter(p => p.category === 'fullstack').length },
     { value: 'ai-ml', label: 'AI/ML', count: projects.filter(p => p.category === 'ai-ml').length },
-    { value: 'infrastructure', label: 'Infrastructure', count: projects.filter(p => p.category === 'infrastructure').length },
   ];
 
   const filteredProjects = filter === 'all' 
@@ -40,16 +38,16 @@ export function ProjectsSection() {
 
   const categoryIcons = {
     backend: Database,
-    fullstack: Code,
     'ai-ml': Brain,
+    fullstack: Code,
     infrastructure: Server,
     tooling: Code,
   };
 
   const categoryColors = {
     backend: 'text-accent-primary',
-    fullstack: 'text-accent-secondary',
     'ai-ml': 'text-accent-tertiary',
+    fullstack: 'text-accent-secondary',
     infrastructure: 'text-accent-warning',
     tooling: 'text-accent-secondary',
   };

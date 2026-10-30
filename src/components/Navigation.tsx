@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn, scrollToSection } from '@/lib/utils';
 import { navItems, socialLinks } from '@/lib/data';
@@ -21,27 +21,46 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
   const [activeSection, setActiveSection] = useState('hero');
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    // IntersectionObserver for accurate scroll-spy
+    const sections = ['hero', 'about', 'experience', 'projects', 'skills', 'achievements', 'contact'];
+    
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px', // Account for navbar height (top) and trigger earlier (bottom)
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        observerRef.current?.observe(element);
+      }
+    });
+
+    // Scroll handler for navbar background
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
-      // Update active section
-      const sections = ['hero', 'about', 'experience', 'projects', 'skills', 'achievements', 'contact'];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observerRef.current?.disconnect();
+    };
   }, []);
 
   useEffect(() => {
@@ -69,7 +88,7 @@ export function Navigation() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           scrolled
-            ? 'bg-bg-primary/90 backdrop-blur-xl border-b border-border-primary/50 shadow-glow-sm'
+            ? 'bg-bg-primary/95 backdrop-blur-xl border-b border-border-primary/50 shadow-glow-sm'
             : 'bg-transparent'
         )}
         role="navigation"

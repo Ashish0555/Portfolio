@@ -4,49 +4,38 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { education, stats } from '@/lib/data';
 import { Card, Badge } from '@/components/ui';
-import { GraduationCap, Award, Target, BookOpen, Code, Brain, Zap } from 'lucide-react';
+import { GraduationCap, Award, Target, BookOpen, Code, Brain, Zap, Server, Sparkles } from 'lucide-react';
 
 export function AboutSection() {
   const aboutItems = [
     {
-      icon: GraduationCap,
-      title: 'Education',
-      description: 'B.Tech Computer Science at IIT (ISM) Dhanbad, graduating May 2027. Strong foundation in CS fundamentals with focus on systems programming.',
+      icon: Server,
+      title: 'Backend & Distributed Systems',
+      description: 'Building scalable APIs, event-driven architectures, and distributed systems using FastAPI, PostgreSQL, Kafka, and Redis.',
       color: 'text-accent-primary',
       bgColor: 'bg-accent-primary/10',
     },
     {
-      icon: Code,
-      title: 'Backend Engineering',
-      description: 'Specialized in building scalable APIs, event-driven architectures, and distributed systems using FastAPI, PostgreSQL, Kafka, and Redis.',
-      color: 'text-accent-secondary',
-      bgColor: 'bg-accent-secondary/10',
-    },
-    {
-      icon: Brain,
-      title: 'AI/ML Integration',
-      description: 'Experience with RAG systems, vector databases (pgvector), and LLM integration (Gemini) for intelligent applications.',
+      icon: Sparkles,
+      title: 'GenAI & Agentic AI',
+      description: 'Developing RAG systems, LangGraph agents, vector search with pgvector, and LLM integration for intelligent applications.',
       color: 'text-accent-tertiary',
       bgColor: 'bg-accent-tertiary/10',
     },
     {
+      icon: Code,
+      title: 'Developer Tools & Automation',
+      description: 'Creating AI-powered code review tools, automated document processing, and intelligent workflows that boost productivity.',
+      color: 'text-accent-secondary',
+      bgColor: 'bg-accent-secondary/10',
+    },
+    {
       icon: Zap,
-      title: 'Performance Optimization',
-      description: 'Passionate about query optimization, concurrency control, latency reduction, and system reliability at scale.',
+      title: 'Performance & Reliability',
+      description: 'Query optimization, concurrency control, latency reduction, and system reliability at scale.',
       color: 'text-accent-warning',
       bgColor: 'bg-accent-warning/10',
     },
-  ];
-
-  const coursework = [
-    'Data Structures & Algorithms',
-    'Operating Systems',
-    'Database Management Systems',
-    'Computer Networks',
-    'Object Oriented Programming',
-    'System Design',
-    'Cloud Computing',
-    'Machine Learning',
   ];
 
   return (
@@ -68,13 +57,13 @@ export function AboutSection() {
             About Me
           </Badge>
           <h2 id="about-title" className="section-title mb-4">
-            Backend Engineer <br />
-            <span className="text-gradient">Building Systems That Scale</span>
+            Software Engineer <br />
+            <span className="text-gradient">Building Intelligent Systems</span>
           </h2>
           <p className="section-subtitle mx-auto text-fluid-base">
-            I'm a 3rd year Computer Science student at IIT (ISM) Dhanbad with a deep passion for 
-            backend engineering, distributed systems, and AI-powered applications. 
-            Currently exploring the intersection of scalable infrastructure and intelligent systems.
+            I'm a final-year Computer Science student at IIT (ISM) Dhanbad with a deep passion for 
+            backend engineering, distributed systems, and GenAI-powered applications. 
+            My work spans scalable backend infrastructure, RAG-based AI systems, and intelligent developer tools.
           </p>
         </motion.div>
 
@@ -138,7 +127,7 @@ export function AboutSection() {
                       <Badge variant="tertiary" size="sm">Expected {education.expectedGraduation}</Badge>
                     </div>
                     <p className="text-text-secondary text-sm">
-                      Relevant coursework: {coursework.slice(0, 4).join(', ')}...
+                      Relevant coursework: {education.relevantCoursework.slice(0, 5).join(', ')}...
                     </p>
                   </div>
                 </div>

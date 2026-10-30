@@ -215,4 +215,44 @@
   .backface-hidden {
     backface-visibility: hidden;
   }
+
+  /* Hero overlay for better text contrast */
+  .hero-overlay {
+    background: linear-gradient(180deg, rgba(3, 7, 18, 0.95) 0%, rgba(12, 20, 38, 0.9) 50%, rgba(17, 24, 39, 0.85) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Focus visible for accessibility */
+  .focus-visible-ring:focus-visible {
+    @apply outline-none ring-2 ring-accent-primary/50 ring-offset-2 ring-offset-bg-primary;
+  }
+
+  /* Custom scrollbar for code blocks */
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-bg-tertiary/50 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-accent-primary/50 rounded-full hover:bg-accent-primary/70;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-primary/70;
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-primary) var(--bg-tertiary);
+  }
 }

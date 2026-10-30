@@ -10,81 +10,91 @@ import {
   Server, 
   Cpu, 
   Brain, 
-  Wrench, 
+  Sparkles,
   GraduationCap,
+  Terminal,
 } from 'lucide-react';
 
+// Helper to convert hex to rgb for gradients
+const hexToRgb = (hex: string | undefined) => {
+  if (!hex) return { r: 0, g: 212, b: 170 };
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : { r: 0, g: 212, b: 170 };
+};
+
+const getSkillGradient = (color: string | undefined) => {
+  const { r, g, b } = hexToRgb(color);
+  return `linear-gradient(135deg, rgba(${r},${g},${b},0.25) 0%, rgba(${r},${g},${b},0.1) 50%, transparent 100%)`;
+};
+
+const getSkillGlow = (color: string | undefined) => {
+  const { r, g, b } = hexToRgb(color);
+  return `0 4px 20px rgba(${r},${g},${b},0.3), 0 0 0 1px rgba(${r},${g},${b},0.4)`;
+};
+
 export function SkillsSection() {
-  // Categories for the 2-column grid (excluding CS Fundamentals which is horizontal)
+  // Define category order - main grid categories (2-column layout)
   const gridCategories = [
     { 
       key: 'language', 
-      label: 'Languages', 
+      label: 'Programming Languages', 
       icon: Code, 
-      color: 'text-accent-primary', 
+      color: '#00d4aa', 
       bgColor: 'bg-accent-primary/10',
-      colSpan: 'md:col-span-1'
-    },
-    { 
-      key: 'backend', 
-      label: 'Backend & Systems', 
-      icon: Cpu, 
-      color: 'text-accent-secondary', 
-      bgColor: 'bg-accent-secondary/10',
-      colSpan: 'md:col-span-1'
-    },
-    { 
-      key: 'database', 
-      label: 'Databases & Storage', 
-      icon: Database, 
-      color: 'text-accent-tertiary', 
-      bgColor: 'bg-accent-tertiary/10',
-      colSpan: 'md:col-span-1'
-    },
-    { 
-      key: 'infrastructure', 
-      label: 'Infrastructure & DevOps', 
-      icon: Server, 
-      color: 'text-accent-warning', 
-      bgColor: 'bg-accent-warning/10',
-      colSpan: 'md:col-span-1'
-    },
-    { 
-      key: 'frontend', 
-      label: 'Frontend', 
-      icon: Code, 
-      color: 'text-accent-secondary', 
-      bgColor: 'bg-accent-secondary/10',
-      colSpan: 'md:col-span-1'
     },
     { 
       key: 'ai-ml', 
-      label: 'AI/ML & Vector Search', 
-      icon: Brain, 
-      color: 'text-accent-tertiary', 
+      label: 'GenAI & Agentic AI', 
+      icon: Sparkles, 
+      color: '#a855f7', 
       bgColor: 'bg-accent-tertiary/10',
-      colSpan: 'md:col-span-2'
+    },
+    { 
+      key: 'backend', 
+      label: 'Backend & Databases', 
+      icon: Server, 
+      color: '#f97316', 
+      bgColor: 'bg-accent-secondary/10',
+    },
+    { 
+      key: 'database', 
+      label: 'Database & Infrastructure', 
+      icon: Database, 
+      color: '#eab308', 
+      bgColor: 'bg-accent-warning/10',
     },
   ];
 
-  // CS Fundamentals - horizontal row at bottom
-  const csFundamentals = skills
-    .filter(s => s.category === 'cs-fundamentals')
-    .sort((a, b) => b.proficiency - a.proficiency);
+  // Horizontal row categories (full width)
+  const horizontalCategories = [
+    { 
+      key: 'cs-fundamentals', 
+      label: 'CS Fundamentals', 
+      icon: GraduationCap, 
+      color: '#00d4aa', 
+      bgColor: 'bg-accent-primary/10',
+    },
+    { 
+      key: 'ai-apis', 
+      label: 'AI APIs & Tools', 
+      icon: Terminal, 
+      color: '#f97316', 
+      bgColor: 'bg-accent-secondary/10',
+    },
+  ];
 
-  const getCategorySkills = (categoryKey: string) => 
-    skills
+  const getCategorySkills = (categoryKey: string) => {
+    if (categoryKey === 'ai-apis') {
+      const aiApiSkillIds = ['openai-api', 'gemini', 'nemotron', 'claude-code', 'codex'];
+      return skills.filter(s => aiApiSkillIds.includes(s.id)).sort((a, b) => b.proficiency - a.proficiency);
+    }
+    return skills
       .filter(s => s.category === categoryKey)
       .sort((a, b) => b.proficiency - a.proficiency);
-
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'Expert': return 'text-accent-primary border-accent-primary/30 bg-accent-primary/10';
-      case 'Advanced': return 'text-accent-secondary border-accent-secondary/30 bg-accent-secondary/10';
-      case 'Proficient': return 'text-accent-tertiary border-accent-tertiary/30 bg-accent-tertiary/10';
-      case 'Intermediate': return 'text-accent-warning border-accent-warning/30 bg-accent-warning/10';
-      default: return 'text-text-tertiary border-border-secondary bg-bg-tertiary/30';
-    }
   };
 
   return (
@@ -110,12 +120,12 @@ export function SkillsSection() {
             <span className="text-gradient">Expertise</span>
           </h2>
           <p className="section-subtitle mx-auto">
-            Deep proficiency across the full backend stack, with growing expertise in AI/ML and distributed systems.
+            Technologies and frameworks I use to build scalable systems and intelligent applications.
           </p>
         </motion.div>
 
         {/* Main Skills Grid - 2 Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
           {gridCategories.map((cat, catIndex) => {
             const catSkills = getCategorySkills(cat.key);
             if (catSkills.length === 0) return null;
@@ -127,13 +137,16 @@ export function SkillsSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
                 transition={{ delay: catIndex * 0.06, duration: 0.4 }}
-                className={cn(cat.colSpan)}
               >
-                <Card variant="bordered" className="h-full p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5">
+                <Card variant="bordered" className="h-full p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden">
+                  {/* Subtle category background gradient */}
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, ${cat.color}10, transparent)` }} />
+                  
                   {/* Category Header */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0', cat.bgColor)}>
-                      <cat.icon className={cn('w-4.5 h-4.5', cat.color)} />
+                  <div className="flex items-center gap-3 mb-4 relative z-10">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${cat.color}20, ${cat.color}05)` }}>
+                      <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cat.color}30, transparent)` }} />
+                      <cat.icon className="w-4.5 h-4.5 relative" style={{ color: cat.color }} />
                     </div>
                     <div className="min-w-0">
                       <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
@@ -141,8 +154,8 @@ export function SkillsSection() {
                     </div>
                   </div>
 
-                  {/* Skills as Compact Badges/Pills */}
-                  <div className="flex flex-wrap gap-2">
+                  {/* Skills as Compact Badges/Pills - COLORFUL VERSION */}
+                  <div className="flex flex-wrap gap-2 relative z-10">
                     {catSkills.map((skill, skillIndex) => (
                       <motion.span
                         key={skill.id}
@@ -153,33 +166,29 @@ export function SkillsSection() {
                       >
                         <span 
                           className={cn(
-                            'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-default',
-                            'hover:shadow-md hover:-translate-y-0.5',
-                            `border ${getLevelColor(skill.level)}`
+                            'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-default',
+                            'hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]'
                           )}
-                          style={{ borderColor: skill.color }}
+                          style={{
+                            background: getSkillGradient(skill.color),
+                            border: `1px solid ${skill.color}66`,
+                            color: skill.color,
+                            boxShadow: `0 2px 8px ${skill.color}33`,
+                          }}
                         >
-                          {/* Skill Color Dot */}
+                          {/* Skill color indicator dot */}
                           <span 
-                            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: skill.color }}
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}` }}
                           />
-                          <span className="text-text-primary">{skill.name}</span>
-                          {/* Experience Badge */}
-                          <span className={cn(
-                            'px-1.5 py-0.5 rounded text-[10px] font-mono font-medium',
-                            skill.level === 'Expert' && 'bg-accent-primary/20 text-accent-primary',
-                            skill.level === 'Advanced' && 'bg-accent-secondary/20 text-accent-secondary',
-                            skill.level !== 'Expert' && skill.level !== 'Advanced' && 'bg-bg-tertiary text-text-tertiary'
-                          )}>
+                          <span className="text-text-primary font-medium">{skill.name}</span>
+                          {/* Experience indicator */}
+                          <span className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-full" style={{ 
+                            backgroundColor: `${skill.color}20`, 
+                            color: skill.color,
+                            border: `1px solid ${skill.color}40`
+                          }}>
                             {skill.yearsOfExperience}yr
-                          </span>
-                          {/* Level Tag */}
-                          <span className={cn(
-                            'px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider',
-                            getLevelColor(skill.level)
-                          )}>
-                            {skill.level}
                           </span>
                         </span>
                       </motion.span>
@@ -191,75 +200,76 @@ export function SkillsSection() {
           })}
         </div>
 
-        {/* CS Fundamentals - Full Width Horizontal Row */}
-        {csFundamentals.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ delay: gridCategories.length * 0.06, duration: 0.4 }}
-            className="w-full"
-          >
-            <Card variant="bordered" className="p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5">
-              {/* Category Header */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-accent-warning/10">
-                  <GraduationCap className="w-4.5 h-4.5 text-accent-warning" />
-                </div>
-                <div>
-                  <h3 className="text-fluid-base font-semibold text-text-primary">CS Fundamentals</h3>
-                  <p className="text-text-tertiary text-xs">{csFundamentals.length} core concepts</p>
-                </div>
-              </div>
+        {/* Horizontal Rows - CS Fundamentals & AI APIs & Tools */}
+        <div className="space-y-6">
+          {horizontalCategories.map((cat, catIndex) => {
+            const catSkills = getCategorySkills(cat.key);
+            if (catSkills.length === 0) return null;
 
-              {/* Horizontal Skill Pills with Dot Dividers */}
-              <div className="flex flex-wrap items-center gap-2">
-                {csFundamentals.map((skill, index) => (
-                  <motion.span
-                    key={skill.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: gridCategories.length * 0.06 + index * 0.02, duration: 0.3 }}
-                    className="flex items-center gap-1"
-                  >
-                    {index > 0 && (
-                      <span className="text-text-tertiary/50 mx-1 select-none">•</span>
-                    )}
-                    <span 
-                      className={cn(
-                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-default',
-                        'hover:shadow-md hover:-translate-y-0.5',
-                        `border ${getLevelColor(skill.level)}`
-                      )}
-                      style={{ borderColor: skill.color }}
-                    >
-                      <span 
-                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                        style={{ backgroundColor: skill.color }}
-                      />
-                      <span className="text-text-primary">{skill.name}</span>
-                      <span className={cn(
-                        'px-1.5 py-0.5 rounded text-[10px] font-mono font-medium',
-                        skill.level === 'Expert' && 'bg-accent-primary/20 text-accent-primary',
-                        skill.level === 'Advanced' && 'bg-accent-secondary/20 text-accent-secondary',
-                        skill.level !== 'Expert' && skill.level !== 'Advanced' && 'bg-bg-tertiary text-text-tertiary'
-                      )}>
-                        {skill.yearsOfExperience}yr
-                      </span>
-                      <span className={cn(
-                        'px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider',
-                        getLevelColor(skill.level)
-                      )}>
-                        {skill.level}
-                      </span>
-                    </span>
-                  </motion.span>
-                ))}
-              </div>
-            </Card>
-          </motion.div>
-        )}
+            return (
+              <motion.div
+                key={cat.key}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{ delay: gridCategories.length * 0.06 + catIndex * 0.1, duration: 0.4 }}
+              >
+                <Card variant="bordered" className="p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden">
+                  {/* Subtle category background gradient */}
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(90deg, ${cat.color}10, transparent)` }} />
+                  
+                  {/* Category Header */}
+                  <div className="flex items-center gap-3 mb-4 relative z-10">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${cat.color}20, ${cat.color}05)` }}>
+                      <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cat.color}30, transparent)` }} />
+                      <cat.icon className="w-4.5 h-4.5 relative" style={{ color: cat.color }} />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
+                      <p className="text-text-tertiary text-xs">{catSkills.length} technologies</p>
+                    </div>
+                  </div>
+
+                  {/* Horizontal skill pills with dot separators - COLORFUL */}
+                  <div className="flex flex-wrap items-center gap-2 relative z-10">
+                    {catSkills.map((skill, skillIndex) => (
+                      <motion.span
+                        key={skill.id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: gridCategories.length * 0.06 + catIndex * 0.1 + skillIndex * 0.02, duration: 0.3 }}
+                        className="flex items-center gap-1"
+                      >
+                        {skillIndex > 0 && (
+                          <span className="text-text-tertiary/50 mx-1 select-none">•</span>
+                        )}
+                        <span 
+                          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-default hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]"
+                          style={{
+                            background: getSkillGradient(skill.color),
+                            border: `1px solid ${skill.color}66`,
+                            color: skill.color,
+                            boxShadow: `0 2px 8px ${skill.color}33`,
+                          }}
+                        >
+                          <span className="text-text-primary font-medium">{skill.name}</span>
+                          <span className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-full" style={{ 
+                            backgroundColor: `${skill.color}20`, 
+                            color: skill.color,
+                            border: `1px solid ${skill.color}40`
+                          }}>
+                            {skill.yearsOfExperience}yr
+                          </span>
+                        </span>
+                      </motion.span>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

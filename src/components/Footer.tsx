@@ -113,11 +113,11 @@ export function Footer() {
               className="space-y-3"
             >
               <a
-                href="mailto:ashishmeena9785110509@gmail.com"
+                href="mailto:23je0172@gmail.com"
                 className="flex items-center gap-3 p-3 rounded-xl bg-bg-tertiary/50 border border-border-primary/50 text-text-secondary hover:text-accent-primary hover:bg-accent-primary/10 hover:border-accent-primary/30 transition-all duration-200"
               >
                 <Mail className="w-5 h-5 text-accent-primary flex-shrink-0" />
-                <span>ashishmeena9785110509@gmail.com</span>
+                <span>23je0172@gmail.com</span>
               </a>
               
               <a
