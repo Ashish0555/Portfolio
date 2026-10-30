@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-space-grotesk: 'Space Grotesk', system-ui, sans-serif;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
+    --font-syne: 'Syne', system-ui, sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg-primary text-text-primary font-sans antialiased;
+    background: linear-gradient(135deg, #030712 0%, #0c1426 50%, #111827 100%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    @apply bg-accent-primary/30 text-text-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-primary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border-secondary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-primary/50;
+  }
+
+  ::-webkit-scrollbar-corner {
+    @apply bg-bg-primary;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-20 sm:py-28 lg:py-32;
+  }
+
+  .glass-card {
+    @apply bg-bg-card backdrop-blur-xl border border-border-primary/50 rounded-2xl transition-all duration-300;
+  }
+
+  .glass-card-hover {
+    @apply hover:bg-bg-cardHover hover:border-border-accent/50 hover:shadow-glow-md;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-primary via-accent-secondary to-accent-tertiary bg-clip-text text-transparent;
+  }
+
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-accent-warning via-orange-400 to-red-400 bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply relative px-6 py-3 bg-gradient-to-r from-accent-primary to-accent-secondary text-bg-primary font-medium rounded-xl overflow-hidden transition-all duration-300;
+  }
+
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-accent-secondary to-accent-tertiary opacity-0 transition-opacity duration-300;
+  }
+
+  .btn-primary:hover::before {
+    @apply opacity-100;
+  }
+
+  .btn-primary span {
+    @apply relative z-10;
+  }
+
+  .btn-secondary {
+    @apply relative px-6 py-3 bg-transparent border border-border-accent text-accent-primary font-medium rounded-xl transition-all duration-300 hover:bg-accent-primary/10 hover:shadow-glow-sm;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 text-text-secondary hover:text-text-primary transition-colors duration-200 rounded-lg hover:bg-bg-tertiary;
+  }
+
+  .section-title {
+    @apply text-fluid-3xl font-display font-bold tracking-tight;
+  }
+
+  @media (min-width: 640px) {
+    .section-title {
+      @apply text-fluid-4xl;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-title {
+      @apply text-fluid-5xl;
+    }
+  }
+
+  .section-subtitle {
+    @apply text-fluid-lg text-text-secondary max-w-2xl;
+  }
+
+  .tag {
+    @apply px-3 py-1 text-xs font-medium rounded-full border transition-all duration-200;
+  }
+
+  .tag-primary {
+    @apply bg-accent-primary/10 border-accent-primary/30 text-accent-primary hover:bg-accent-primary/20;
+  }
+
+  .tag-secondary {
+    @apply bg-accent-secondary/10 border-accent-secondary/30 text-accent-secondary hover:bg-accent-secondary/20;
+  }
+
+  .tag-tertiary {
+    @apply bg-accent-tertiary/10 border-accent-tertiary/30 text-accent-tertiary hover:bg-accent-tertiary/20;
+  }
+
+  .tag-warning {
+    @apply bg-accent-warning/10 border-accent-warning/30 text-accent-warning hover:bg-accent-warning/20;
+  }
+
+  .code-block {
+    @apply bg-bg-tertiary/50 border border-border-primary/50 rounded-xl p-4 font-mono text-sm overflow-x-auto;
+  }
+
+  .terminal-window {
+    @apply bg-bg-primary border border-border-primary rounded-xl overflow-hidden;
+  }
+
+  .terminal-header {
+    @apply bg-bg-secondary border-b border-border-primary px-4 py-3 flex items-center gap-2;
+  }
+
+  .terminal-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .link-underline {
+    @apply relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-accent-primary after:scale-x-0 after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(0, 212, 170, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 170, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .noise-overlay {
+    position: relative;
+  }
+
+  .noise-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 10;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-in {
+    animation: animate-in 0.6s ease-out forwards;
+  }
+
+  @keyframes animate-in {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  .stagger-6 { animation-delay: 0.6s; }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+}
