@@ -92,6 +92,39 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: 'stacklens',
+    name: 'StackLens',
+    description: 'AI-powered document Q&A platform with RAG, automated code review for local changes and GitHub PRs, and AI-driven bug/security detection.',
+    longDescription: 'StackLens is an AI-powered platform where users upload documents, ask questions, and receive cited answers. It also provides automated reviews of local code changes and GitHub pull requests with an AI code reviewer that flags potential bugs and security issues with severity ratings, suggested fixes, and guardrails that validate findings before optional GitHub inline comments.',
+    problem: 'Developers and teams struggle with knowledge retrieval from large document sets and lack automated, intelligent code review that catches bugs and security issues before they reach production.',
+    solution: 'Implemented RAG with LangGraph, OpenAI embeddings, and PostgreSQL/pgvector combining vector and keyword search for relevant content retrieval and citation verification. Built FastAPI services with account-isolated ingestion, Redis sessions, Kafka-based event-driven jobs, and observability for latency, token usage, and estimated API costs.',
+    impact: [
+      'RAG-powered document Q&A with cited answers using hybrid vector + keyword search',
+      'AI code reviewer detecting bugs and security issues with severity ratings and suggested fixes',
+      'Guardrails validating findings before optional GitHub inline comments',
+      'Account-isolated document ingestion with event-driven processing via Kafka',
+      'Full observability for latency, token usage, and API cost estimation',
+    ],
+    technologies: ['Python', 'FastAPI', 'LangGraph', 'OpenAI', 'PostgreSQL', 'pgvector', 'Redis', 'Kafka', 'Docker'],
+    category: 'ai-ml',
+    githubUrl: 'https://github.com/Ashish0555/StackLens',
+    featured: true,
+    images: [],
+    architecture: 'AI-enhanced full-stack application with LangGraph agents, vector search, and event-driven architecture',
+    challenges: [
+      'Building accurate hybrid search combining vector and keyword retrieval',
+      'Implementing guardrails for AI code review validation',
+      'Account-isolated multi-tenant document ingestion pipeline',
+      'Real-time observability for LLM token usage and cost tracking',
+    ],
+    learnings: [
+      'LangGraph for building controllable AI agent workflows',
+      'Hybrid search strategies with pgvector and full-text search',
+      'Event-driven architecture with Kafka for async AI processing',
+      'Cost-aware LLM application design with token observability',
+    ],
+  },
+  {
     id: 'codesage',
     name: 'CodeSage',
     description: 'AI-powered DSA and interview coaching platform with coding practice, AI hints, concept tutoring, and mock interviews.',
@@ -125,40 +158,49 @@ export const projects: Project[] = [
 
 export const skills: Skill[] = [
   // Languages
-  { id: 'cpp', name: 'C++', category: 'language', proficiency: 90, yearsOfExperience: 4, color: '#00599C' },
-  { id: 'c', name: 'C', category: 'language', proficiency: 85, yearsOfExperience: 4, color: '#A8B9CC' },
-  { id: 'python', name: 'Python', category: 'language', proficiency: 95, yearsOfExperience: 3, color: '#3776AB' },
-  { id: 'javascript', name: 'JavaScript', category: 'language', proficiency: 80, yearsOfExperience: 2, color: '#F7DF1E' },
-  { id: 'sql', name: 'SQL', category: 'language', proficiency: 90, yearsOfExperience: 3, color: '#4479A1' },
+  { id: 'python', name: 'Python', category: 'language', proficiency: 95, yearsOfExperience: 3, color: '#3776AB', level: 'Expert' },
+  { id: 'cpp', name: 'C++', category: 'language', proficiency: 90, yearsOfExperience: 4, color: '#00599C', level: 'Expert' },
+  { id: 'sql', name: 'SQL', category: 'language', proficiency: 90, yearsOfExperience: 3, color: '#4479A1', level: 'Expert' },
+  { id: 'javascript', name: 'JavaScript', category: 'language', proficiency: 80, yearsOfExperience: 2, color: '#F7DF1E', level: 'Advanced' },
 
-  // Backend
-  { id: 'fastapi', name: 'FastAPI', category: 'backend', proficiency: 95, yearsOfExperience: 2, color: '#009688' },
-  { id: 'rest-api', name: 'REST APIs', category: 'backend', proficiency: 90, yearsOfExperience: 3, color: '#FF6C37' },
-  { id: 'sqlalchemy', name: 'SQLAlchemy', category: 'backend', proficiency: 85, yearsOfExperience: 2, color: '#D71F00' },
+  // Backend & Systems
+  { id: 'fastapi', name: 'FastAPI', category: 'backend', proficiency: 95, yearsOfExperience: 2, color: '#009688', level: 'Expert' },
+  { id: 'rest-api', name: 'REST APIs', category: 'backend', proficiency: 90, yearsOfExperience: 3, color: '#FF6C37', level: 'Expert' },
+  { id: 'sqlalchemy', name: 'SQLAlchemy', category: 'backend', proficiency: 85, yearsOfExperience: 2, color: '#D71F00', level: 'Advanced' },
 
-  // Database & Infrastructure
-  { id: 'postgresql', name: 'PostgreSQL', category: 'database', proficiency: 90, yearsOfExperience: 3, color: '#336791' },
-  { id: 'redis', name: 'Redis', category: 'database', proficiency: 85, yearsOfExperience: 2, color: '#DC382D' },
-  { id: 'kafka', name: 'Kafka', category: 'infrastructure', proficiency: 80, yearsOfExperience: 1, color: '#231F20' },
-  { id: 'docker', name: 'Docker', category: 'infrastructure', proficiency: 85, yearsOfExperience: 2, color: '#2496ED' },
+  // Databases & Storage
+  { id: 'postgresql', name: 'PostgreSQL', category: 'database', proficiency: 90, yearsOfExperience: 3, color: '#336791', level: 'Expert' },
+  { id: 'redis', name: 'Redis', category: 'database', proficiency: 85, yearsOfExperience: 2, color: '#DC382D', level: 'Advanced' },
+
+  // Infrastructure & DevOps
+  { id: 'docker', name: 'Docker', category: 'infrastructure', proficiency: 85, yearsOfExperience: 2, color: '#2496ED', level: 'Advanced' },
+  { id: 'kafka', name: 'Kafka', category: 'infrastructure', proficiency: 80, yearsOfExperience: 2, color: '#231F20', level: 'Advanced' },
 
   // Frontend
-  { id: 'react', name: 'React.js', category: 'frontend', proficiency: 80, yearsOfExperience: 2, color: '#61DAFB' },
-  { id: 'nextjs', name: 'Next.js', category: 'frontend', proficiency: 75, yearsOfExperience: 1, color: '#000000' },
+  { id: 'react', name: 'React.js', category: 'frontend', proficiency: 80, yearsOfExperience: 2, color: '#61DAFB', level: 'Advanced' },
+  { id: 'nextjs', name: 'Next.js', category: 'frontend', proficiency: 75, yearsOfExperience: 2, color: '#000000', level: 'Advanced' },
 
-  // AI/ML
-  { id: 'gemini', name: 'Gemini API', category: 'ai-ml', proficiency: 80, yearsOfExperience: 1, color: '#4285F4' },
-  { id: 'rag', name: 'RAG', category: 'ai-ml', proficiency: 85, yearsOfExperience: 1, color: '#8E44AD' },
-  { id: 'pgvector', name: 'pgvector', category: 'ai-ml', proficiency: 80, yearsOfExperience: 1, color: '#336791' },
+  // AI/ML & Vector Search
+  { id: 'rag', name: 'RAG', category: 'ai-ml', proficiency: 90, yearsOfExperience: 2, color: '#8E44AD', level: 'Expert' },
+  { id: 'langchain', name: 'LangChain', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#1C3C6E', level: 'Advanced' },
+  { id: 'langgraph', name: 'LangGraph', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#1C3C6E', level: 'Advanced' },
+  { id: 'pgvector', name: 'pgvector', category: 'ai-ml', proficiency: 80, yearsOfExperience: 2, color: '#336791', level: 'Advanced' },
+  { id: 'tool-calling', name: 'Tool Calling', category: 'ai-ml', proficiency: 80, yearsOfExperience: 2, color: '#8E44AD', level: 'Advanced' },
+  { id: 'structured-outputs', name: 'Structured Outputs', category: 'ai-ml', proficiency: 80, yearsOfExperience: 2, color: '#8E44AD', level: 'Advanced' },
+  { id: 'prompt-engineering', name: 'Prompt Engineering', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#8E44AD', level: 'Advanced' },
+
+  // AI APIs & Tools (consolidated)
+  { id: 'ai-apis-tools', name: 'AI APIs & Tools', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#412991', level: 'Advanced' },
+  { id: 'llm-integration', name: 'LLM Integration', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#8E44AD', level: 'Advanced' },
 
   // CS Fundamentals
-  { id: 'dsa', name: 'DSA', category: 'cs-fundamentals', proficiency: 95, yearsOfExperience: 4, color: '#E74C3C' },
-  { id: 'oops', name: 'OOP', category: 'cs-fundamentals', proficiency: 90, yearsOfExperience: 4, color: '#F39C12' },
-  { id: 'os', name: 'Operating Systems', category: 'cs-fundamentals', proficiency: 85, yearsOfExperience: 3, color: '#2ECC71' },
-  { id: 'dbms', name: 'DBMS', category: 'cs-fundamentals', proficiency: 90, yearsOfExperience: 3, color: '#3498DB' },
-  { id: 'cn', name: 'Computer Networks', category: 'cs-fundamentals', proficiency: 85, yearsOfExperience: 3, color: '#9B59B6' },
-  { id: 'system-design', name: 'System Design', category: 'cs-fundamentals', proficiency: 80, yearsOfExperience: 2, color: '#1ABC9C' },
-  { id: 'cloud', name: 'Cloud Computing', category: 'cs-fundamentals', proficiency: 75, yearsOfExperience: 1, color: '#FF9900' },
+  { id: 'dsa', name: 'DSA', category: 'cs-fundamentals', proficiency: 95, yearsOfExperience: 4, color: '#E74C3C', level: 'Expert' },
+  { id: 'oops', name: 'OOP', category: 'cs-fundamentals', proficiency: 90, yearsOfExperience: 4, color: '#F39C12', level: 'Expert' },
+  { id: 'dbms', name: 'DBMS', category: 'cs-fundamentals', proficiency: 90, yearsOfExperience: 3, color: '#3498DB', level: 'Expert' },
+  { id: 'os', name: 'Operating Systems', category: 'cs-fundamentals', proficiency: 85, yearsOfExperience: 3, color: '#2ECC71', level: 'Advanced' },
+  { id: 'cn', name: 'Computer Networks', category: 'cs-fundamentals', proficiency: 85, yearsOfExperience: 3, color: '#9B59B6', level: 'Advanced' },
+  { id: 'system-design', name: 'System Design', category: 'cs-fundamentals', proficiency: 80, yearsOfExperience: 2, color: '#1ABC9C', level: 'Advanced' },
+  { id: 'cloud', name: 'Cloud Computing', category: 'cs-fundamentals', proficiency: 75, yearsOfExperience: 2, color: '#FF9900', level: 'Advanced' },
 ];
 
 export const achievements: Achievement[] = [

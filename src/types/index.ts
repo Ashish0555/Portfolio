@@ -38,6 +38,7 @@ export interface Skill {
   category: 'language' | 'backend' | 'database' | 'infrastructure' | 'frontend' | 'ai-ml' | 'tools' | 'cs-fundamentals';
   proficiency: number; // 1-100
   yearsOfExperience: number;
+  level: 'Expert' | 'Advanced' | 'Proficient' | 'Intermediate' | 'Beginner';
   description?: string;
   icon?: string;
   color?: string;

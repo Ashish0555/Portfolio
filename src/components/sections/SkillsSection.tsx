@@ -12,23 +12,80 @@ import {
   Brain, 
   Wrench, 
   GraduationCap,
-  BarChart,
 } from 'lucide-react';
 
 export function SkillsSection() {
-  const categories = [
-    { key: 'language', label: 'Languages', icon: Code, color: 'text-accent-primary' },
-    { key: 'backend', label: 'Backend', icon: Cpu, color: 'text-accent-secondary' },
-    { key: 'database', label: 'Databases', icon: Database, color: 'text-accent-tertiary' },
-    { key: 'infrastructure', label: 'Infrastructure', icon: Server, color: 'text-accent-warning' },
-    { key: 'frontend', label: 'Frontend', icon: Code, color: 'text-accent-secondary' },
-    { key: 'ai-ml', label: 'AI/ML', icon: Brain, color: 'text-accent-tertiary' },
-    { key: 'tools', label: 'Tools', icon: Wrench, color: 'text-accent-primary' },
-    { key: 'cs-fundamentals', label: 'CS Fundamentals', icon: GraduationCap, color: 'text-accent-warning' },
+  // Categories for the 2-column grid (excluding CS Fundamentals which is horizontal)
+  const gridCategories = [
+    { 
+      key: 'language', 
+      label: 'Languages', 
+      icon: Code, 
+      color: 'text-accent-primary', 
+      bgColor: 'bg-accent-primary/10',
+      colSpan: 'md:col-span-1'
+    },
+    { 
+      key: 'backend', 
+      label: 'Backend & Systems', 
+      icon: Cpu, 
+      color: 'text-accent-secondary', 
+      bgColor: 'bg-accent-secondary/10',
+      colSpan: 'md:col-span-1'
+    },
+    { 
+      key: 'database', 
+      label: 'Databases & Storage', 
+      icon: Database, 
+      color: 'text-accent-tertiary', 
+      bgColor: 'bg-accent-tertiary/10',
+      colSpan: 'md:col-span-1'
+    },
+    { 
+      key: 'infrastructure', 
+      label: 'Infrastructure & DevOps', 
+      icon: Server, 
+      color: 'text-accent-warning', 
+      bgColor: 'bg-accent-warning/10',
+      colSpan: 'md:col-span-1'
+    },
+    { 
+      key: 'frontend', 
+      label: 'Frontend', 
+      icon: Code, 
+      color: 'text-accent-secondary', 
+      bgColor: 'bg-accent-secondary/10',
+      colSpan: 'md:col-span-1'
+    },
+    { 
+      key: 'ai-ml', 
+      label: 'AI/ML & Vector Search', 
+      icon: Brain, 
+      color: 'text-accent-tertiary', 
+      bgColor: 'bg-accent-tertiary/10',
+      colSpan: 'md:col-span-2'
+    },
   ];
 
+  // CS Fundamentals - horizontal row at bottom
+  const csFundamentals = skills
+    .filter(s => s.category === 'cs-fundamentals')
+    .sort((a, b) => b.proficiency - a.proficiency);
+
   const getCategorySkills = (categoryKey: string) => 
-    skills.filter(s => s.category === categoryKey).sort((a, b) => b.proficiency - a.proficiency);
+    skills
+      .filter(s => s.category === categoryKey)
+      .sort((a, b) => b.proficiency - a.proficiency);
+
+  const getLevelColor = (level: string) => {
+    switch (level) {
+      case 'Expert': return 'text-accent-primary border-accent-primary/30 bg-accent-primary/10';
+      case 'Advanced': return 'text-accent-secondary border-accent-secondary/30 bg-accent-secondary/10';
+      case 'Proficient': return 'text-accent-tertiary border-accent-tertiary/30 bg-accent-tertiary/10';
+      case 'Intermediate': return 'text-accent-warning border-accent-warning/30 bg-accent-warning/10';
+      default: return 'text-text-tertiary border-border-secondary bg-bg-tertiary/30';
+    }
+  };
 
   return (
     <section
@@ -42,7 +99,7 @@ export function SkillsSection() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-12"
         >
           <Badge variant="tertiary" className="mb-4 inline-block">
             <Cpu className="w-4 h-4 mr-1" />
@@ -57,67 +114,75 @@ export function SkillsSection() {
           </p>
         </motion.div>
 
-        {/* Skills Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((cat, catIndex) => {
+        {/* Main Skills Grid - 2 Column Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {gridCategories.map((cat, catIndex) => {
             const catSkills = getCategorySkills(cat.key);
             if (catSkills.length === 0) return null;
 
             return (
               <motion.div
                 key={cat.key}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
-                transition={{ delay: catIndex * 0.08 }}
+                transition={{ delay: catIndex * 0.06, duration: 0.4 }}
+                className={cn(cat.colSpan)}
               >
-                <Card variant="bordered" className="h-full overflow-hidden">
+                <Card variant="bordered" className="h-full p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5">
                   {/* Category Header */}
-                  <div className="flex items-center gap-3 mb-6 p-6 pb-0">
-                    <div className={cn('w-10 h-10 rounded-xl flex items-center justify-center', `${cat.color}/10 bg-[${cat.color}]/10`)}>
-                      <cat.icon className={cn('w-5 h-5', cat.color)} />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0', cat.bgColor)}>
+                      <cat.icon className={cn('w-4.5 h-4.5', cat.color)} />
                     </div>
-                    <div>
-                      <h3 className="text-fluid-lg font-semibold text-text-primary">{cat.label}</h3>
-                      <p className="text-text-tertiary text-sm">{catSkills.length} technologies</p>
+                    <div className="min-w-0">
+                      <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
+                      <p className="text-text-tertiary text-xs">{catSkills.length} technologies</p>
                     </div>
                   </div>
 
-                  {/* Skills List */}
-                  <div className="px-6 pb-6 space-y-4">
+                  {/* Skills as Compact Badges/Pills */}
+                  <div className="flex flex-wrap gap-2">
                     {catSkills.map((skill, skillIndex) => (
-                      <motion.div
+                      <motion.span
                         key={skill.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: catIndex * 0.08 + skillIndex * 0.03 }}
+                        transition={{ delay: catIndex * 0.06 + skillIndex * 0.02, duration: 0.3 }}
                       >
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-medium text-text-primary">{skill.name}</span>
-                            {skill.yearsOfExperience > 0 && (
-                              <Badge variant="secondary" size="sm" className="text-xs">
-                                {skill.yearsOfExperience}yr
-                              </Badge>
-                            )}
-                          </div>
-                          <span className="text-sm font-mono text-text-tertiary">{skill.proficiency}%</span>
-                        </div>
-                        <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.proficiency}%` }}
-                            viewport={{ once: true, margin: '-50px' }}
-                            transition={{ duration: 1, ease: 'easeOut', delay: catIndex * 0.08 + skillIndex * 0.03 + 0.3 }}
-                            className="h-full rounded-full transition-all duration-1000"
-                            style={{
-                              background: `linear-gradient(90deg, ${skill.color || 'var(--accent-primary)'}, ${cat.color.replace('text-', '')})`,
-                              boxShadow: `0 0 10px ${skill.color || 'var(--accent-primary)'}`,
-                            }}
+                        <span 
+                          className={cn(
+                            'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-default',
+                            'hover:shadow-md hover:-translate-y-0.5',
+                            `border ${getLevelColor(skill.level)}`
+                          )}
+                          style={{ borderColor: skill.color }}
+                        >
+                          {/* Skill Color Dot */}
+                          <span 
+                            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                            style={{ backgroundColor: skill.color }}
                           />
-                        </div>
-                      </motion.div>
+                          <span className="text-text-primary">{skill.name}</span>
+                          {/* Experience Badge */}
+                          <span className={cn(
+                            'px-1.5 py-0.5 rounded text-[10px] font-mono font-medium',
+                            skill.level === 'Expert' && 'bg-accent-primary/20 text-accent-primary',
+                            skill.level === 'Advanced' && 'bg-accent-secondary/20 text-accent-secondary',
+                            skill.level !== 'Expert' && skill.level !== 'Advanced' && 'bg-bg-tertiary text-text-tertiary'
+                          )}>
+                            {skill.yearsOfExperience}yr
+                          </span>
+                          {/* Level Tag */}
+                          <span className={cn(
+                            'px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider',
+                            getLevelColor(skill.level)
+                          )}>
+                            {skill.level}
+                          </span>
+                        </span>
+                      </motion.span>
                     ))}
                   </div>
                 </Card>
@@ -126,38 +191,75 @@ export function SkillsSection() {
           })}
         </div>
 
-        {/* Proficiency Legend */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ delay: categories.length * 0.08 }}
-          className="mt-12"
-        >
-          <Card variant="bordered">
-            <div className="p-6">
-              <h3 className="text-fluid-lg font-semibold text-text-primary mb-6 flex items-center gap-2">
-                <BarChart className="w-5 h-5 text-accent-primary" />
-                Proficiency Scale
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                {[
-                  { range: '90-100%', label: 'Expert', desc: 'Production architecture & optimization', color: 'text-accent-primary' },
-                  { range: '75-89%', label: 'Advanced', desc: 'Complex features & system design', color: 'text-accent-secondary' },
-                  { range: '60-74%', label: 'Proficient', desc: 'Independent development & debugging', color: 'text-accent-tertiary' },
-                  { range: '40-59%', label: 'Intermediate', desc: 'Guided development & learning', color: 'text-accent-warning' },
-                  { range: '0-39%', label: 'Beginner', desc: 'Exploring & experimenting', color: 'text-text-tertiary' },
-                ].map((level) => (
-                  <div key={level.label} className="text-center p-4 rounded-xl bg-bg-tertiary/30">
-                    <div className="text-fluid-xl font-display font-bold mb-1" style={{ color: level.color }}>{level.range}</div>
-                    <div className="text-sm font-medium text-text-primary mb-1">{level.label}</div>
-                    <div className="text-xs text-text-tertiary">{level.desc}</div>
-                  </div>
+        {/* CS Fundamentals - Full Width Horizontal Row */}
+        {csFundamentals.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ delay: gridCategories.length * 0.06, duration: 0.4 }}
+            className="w-full"
+          >
+            <Card variant="bordered" className="p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5">
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 bg-accent-warning/10">
+                  <GraduationCap className="w-4.5 h-4.5 text-accent-warning" />
+                </div>
+                <div>
+                  <h3 className="text-fluid-base font-semibold text-text-primary">CS Fundamentals</h3>
+                  <p className="text-text-tertiary text-xs">{csFundamentals.length} core concepts</p>
+                </div>
+              </div>
+
+              {/* Horizontal Skill Pills with Dot Dividers */}
+              <div className="flex flex-wrap items-center gap-2">
+                {csFundamentals.map((skill, index) => (
+                  <motion.span
+                    key={skill.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: gridCategories.length * 0.06 + index * 0.02, duration: 0.3 }}
+                    className="flex items-center gap-1"
+                  >
+                    {index > 0 && (
+                      <span className="text-text-tertiary/50 mx-1 select-none">•</span>
+                    )}
+                    <span 
+                      className={cn(
+                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-default',
+                        'hover:shadow-md hover:-translate-y-0.5',
+                        `border ${getLevelColor(skill.level)}`
+                      )}
+                      style={{ borderColor: skill.color }}
+                    >
+                      <span 
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: skill.color }}
+                      />
+                      <span className="text-text-primary">{skill.name}</span>
+                      <span className={cn(
+                        'px-1.5 py-0.5 rounded text-[10px] font-mono font-medium',
+                        skill.level === 'Expert' && 'bg-accent-primary/20 text-accent-primary',
+                        skill.level === 'Advanced' && 'bg-accent-secondary/20 text-accent-secondary',
+                        skill.level !== 'Expert' && skill.level !== 'Advanced' && 'bg-bg-tertiary text-text-tertiary'
+                      )}>
+                        {skill.yearsOfExperience}yr
+                      </span>
+                      <span className={cn(
+                        'px-2 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider',
+                        getLevelColor(skill.level)
+                      )}>
+                        {skill.level}
+                      </span>
+                    </span>
+                  </motion.span>
                 ))}
               </div>
-            </div>
-          </Card>
-        </motion.div>
+            </Card>
+          </motion.div>
+        )}
       </div>
     </section>
   );
