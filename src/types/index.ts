@@ -35,7 +35,7 @@ export interface Project {
 export interface Skill {
   id: string;
   name: string;
-  category: 'language' | 'backend' | 'database' | 'infrastructure' | 'frontend' | 'ai-ml' | 'tools' | 'cs-fundamentals';
+  category: 'language' | 'backend' | 'database' | 'infrastructure' | 'frontend' | 'ai-ml' | 'tools' | 'cs-fundamentals' | 'ai-apis';
   proficiency: number; // 1-100
   yearsOfExperience: number;
   description?: string;

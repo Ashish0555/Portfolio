@@ -159,12 +159,12 @@ export const skills: Skill[] = [
   { id: 'system-design', name: 'System Design', category: 'cs-fundamentals', proficiency: 80, yearsOfExperience: 2, color: '#1ABC9C' },
   { id: 'cloud', name: 'Cloud Computing', category: 'cs-fundamentals', proficiency: 75, yearsOfExperience: 2, color: '#FF9900' },
 
-  // AI APIs & Tools
-  { id: 'openai-api', name: 'OpenAI API', category: 'ai-ml', proficiency: 85, yearsOfExperience: 2, color: '#412991' },
-  { id: 'gemini', name: 'Gemini API', category: 'ai-ml', proficiency: 80, yearsOfExperience: 2, color: '#4285F4' },
-  { id: 'nemotron', name: 'NVIDIA Nemotron API', category: 'ai-ml', proficiency: 75, yearsOfExperience: 2, color: '#76B900' },
-  { id: 'claude-code', name: 'Claude Code', category: 'ai-ml', proficiency: 75, yearsOfExperience: 2, color: '#D97757' },
-  { id: 'codex', name: 'Codex', category: 'ai-ml', proficiency: 75, yearsOfExperience: 2, color: '#10A37F' },
+  // AI APIs & Tools (also appear in horizontal AI APIs & Tools row)
+  { id: 'openai-api', name: 'OpenAI API', category: 'ai-apis', proficiency: 85, yearsOfExperience: 2, color: '#412991' },
+  { id: 'gemini', name: 'Gemini API', category: 'ai-apis', proficiency: 80, yearsOfExperience: 2, color: '#4285F4' },
+  { id: 'nemotron', name: 'NVIDIA Nemotron API', category: 'ai-apis', proficiency: 75, yearsOfExperience: 2, color: '#76B900' },
+  { id: 'claude-code', name: 'Claude Code', category: 'ai-apis', proficiency: 75, yearsOfExperience: 2, color: '#D97757' },
+  { id: 'codex', name: 'Codex', category: 'ai-apis', proficiency: 75, yearsOfExperience: 2, color: '#10A37F' },
 ];
 
 export const achievements: Achievement[] = [

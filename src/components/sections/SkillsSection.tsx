@@ -37,35 +37,39 @@ const getSkillGlow = (color: string | undefined) => {
 };
 
 export function SkillsSection() {
-  // Define category order - main grid categories (2-column layout)
-  const gridCategories = [
+  // Row 1: Two shorter categories side by side
+  const row1Categories = [
     { 
       key: 'language', 
       label: 'Programming Languages', 
       icon: Code, 
       color: '#00d4aa', 
-      bgColor: 'bg-accent-primary/10',
-    },
-    { 
-      key: 'ai-ml', 
-      label: 'GenAI & Agentic AI', 
-      icon: Sparkles, 
-      color: '#a855f7', 
-      bgColor: 'bg-accent-tertiary/10',
     },
     { 
       key: 'backend', 
       label: 'Backend & Databases', 
       icon: Server, 
       color: '#f97316', 
-      bgColor: 'bg-accent-secondary/10',
     },
+  ];
+
+  // Row 2: GenAI spans full width (dense category)
+  const row2Categories = [
+    { 
+      key: 'ai-ml', 
+      label: 'GenAI & Agentic AI', 
+      icon: Sparkles, 
+      color: '#a855f7', 
+    },
+  ];
+
+  // Row 3: Two shorter categories side by side
+  const row3Categories = [
     { 
       key: 'database', 
       label: 'Database & Infrastructure', 
       icon: Database, 
       color: '#eab308', 
-      bgColor: 'bg-accent-warning/10',
     },
   ];
 
@@ -76,14 +80,12 @@ export function SkillsSection() {
       label: 'CS Fundamentals', 
       icon: GraduationCap, 
       color: '#00d4aa', 
-      bgColor: 'bg-accent-primary/10',
     },
     { 
       key: 'ai-apis', 
       label: 'AI APIs & Tools', 
       icon: Terminal, 
       color: '#f97316', 
-      bgColor: 'bg-accent-secondary/10',
     },
   ];
 
@@ -95,6 +97,158 @@ export function SkillsSection() {
     return skills
       .filter(s => s.category === categoryKey)
       .sort((a, b) => b.proficiency - a.proficiency);
+  };
+
+  const renderCategoryRow = (categories: typeof row1Categories, rowIndex: number, colSpan: string = 'md:col-span-1') => (
+    <div key={`row-${rowIndex}`} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {categories.map((cat, catIndex) => {
+        const catSkills = getCategorySkills(cat.key);
+        if (catSkills.length === 0) return null;
+
+        return (
+          <motion.div
+            key={cat.key}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ delay: rowIndex * 0.1 + catIndex * 0.06, duration: 0.4 }}
+            className={cn(colSpan)}
+          >
+            <Card variant="bordered" className="h-full p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden flex flex-col">
+              {/* Subtle category background gradient */}
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, ${cat.color}10, transparent)` }} />
+              
+              {/* Category Header */}
+              <div className="flex items-center gap-3 mb-4 relative z-10">
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${cat.color}20, ${cat.color}05)` }}>
+                  <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cat.color}30, transparent)` }} />
+                  <cat.icon className="w-4.5 h-4.5 relative" style={{ color: cat.color }} />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
+                  <p className="text-text-tertiary text-xs">{catSkills.length} technologies</p>
+                </div>
+              </div>
+
+              {/* Skills as Compact Badges/Pills - COLORFUL VERSION */}
+              <div className="flex flex-wrap gap-2 relative z-10 flex-1">
+                {catSkills.map((skill, skillIndex) => (
+                  <motion.span
+                    key={skill.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: rowIndex * 0.1 + catIndex * 0.06 + skillIndex * 0.02, duration: 0.3 }}
+                  >
+                    <span 
+                      className={cn(
+                        'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-default',
+                        'hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]'
+                      )}
+                      style={{
+                        background: getSkillGradient(skill.color),
+                        border: `1px solid ${skill.color}66`,
+                        color: skill.color,
+                        boxShadow: `0 2px 8px ${skill.color}33`,
+                      }}
+                    >
+                      {/* Skill color indicator dot */}
+                      <span 
+                        className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}` }}
+                      />
+                      <span className="text-text-primary font-medium">{skill.name}</span>
+                      {/* Experience indicator */}
+                      <span className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-full" style={{ 
+                        backgroundColor: `${skill.color}20`, 
+                        color: skill.color,
+                        border: `1px solid ${skill.color}40`
+                      }}>
+                        {skill.yearsOfExperience}yr
+                      </span>
+                    </span>
+                  </motion.span>
+                ))}
+              </div>
+            </Card>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+
+  const renderFullWidthCategory = (cat: typeof row1Categories[0], rowIndex: number) => {
+    const catSkills = getCategorySkills(cat.key);
+    if (catSkills.length === 0) return null;
+
+    return (
+      <motion.div
+        key={cat.key}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-100px' }}
+        transition={{ delay: rowIndex * 0.1, duration: 0.4 }}
+        className="w-full"
+      >
+        <Card variant="bordered" className="p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden">
+          {/* Subtle category background gradient */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, ${cat.color}10, transparent)` }} />
+          
+          {/* Category Header */}
+          <div className="flex items-center gap-3 mb-4 relative z-10">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${cat.color}20, ${cat.color}05)` }}>
+              <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cat.color}30, transparent)` }} />
+              <cat.icon className="w-4.5 h-4.5 relative" style={{ color: cat.color }} />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
+              <p className="text-text-tertiary text-xs">{catSkills.length} technologies</p>
+            </div>
+          </div>
+
+          {/* Skills as Compact Badges/Pills - COLORFUL VERSION */}
+          <div className="flex flex-wrap gap-2 relative z-10">
+            {catSkills.map((skill, skillIndex) => (
+              <motion.span
+                key={skill.id}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: rowIndex * 0.1 + skillIndex * 0.02, duration: 0.3 }}
+              >
+                <span 
+                  className={cn(
+                    'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-default',
+                    'hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]'
+                  )}
+                  style={{
+                    background: getSkillGradient(skill.color),
+                    border: `1px solid ${skill.color}66`,
+                    color: skill.color,
+                    boxShadow: `0 2px 8px ${skill.color}33`,
+                  }}
+                >
+                  {/* Skill color indicator dot */}
+                  <span 
+                    className="w-2 h-2 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}` }}
+                  />
+                  <span className="text-text-primary font-medium">{skill.name}</span>
+                  {/* Experience indicator */}
+                  <span className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-full" style={{ 
+                    backgroundColor: `${skill.color}20`, 
+                    color: skill.color,
+                    border: `1px solid ${skill.color}40`
+                  }}>
+                    {skill.yearsOfExperience}yr
+                  </span>
+                </span>
+              </motion.span>
+            ))}
+          </div>
+        </Card>
+      </motion.div>
+    );
   };
 
   return (
@@ -115,7 +269,7 @@ export function SkillsSection() {
             <Cpu className="w-4 h-4 mr-1" />
             Technical Skills
           </Badge>
-          <h2 id="skills-title" className="section-title mb-4">
+          <h2 id="skills-title" className="section-title leading-tight mb-4">
             Tech Stack & <br />
             <span className="text-gradient">Expertise</span>
           </h2>
@@ -124,84 +278,17 @@ export function SkillsSection() {
           </p>
         </motion.div>
 
-        {/* Main Skills Grid - 2 Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-          {gridCategories.map((cat, catIndex) => {
-            const catSkills = getCategorySkills(cat.key);
-            if (catSkills.length === 0) return null;
+        {/* Row 1: Programming Languages + Backend & Databases (side by side) */}
+        {renderCategoryRow(row1Categories, 0)}
 
-            return (
-              <motion.div
-                key={cat.key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-100px' }}
-                transition={{ delay: catIndex * 0.06, duration: 0.4 }}
-              >
-                <Card variant="bordered" className="h-full p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden">
-                  {/* Subtle category background gradient */}
-                  <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(135deg, ${cat.color}10, transparent)` }} />
-                  
-                  {/* Category Header */}
-                  <div className="flex items-center gap-3 mb-4 relative z-10">
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 relative overflow-hidden" style={{ background: `linear-gradient(135deg, ${cat.color}20, ${cat.color}05)` }}>
-                      <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${cat.color}30, transparent)` }} />
-                      <cat.icon className="w-4.5 h-4.5 relative" style={{ color: cat.color }} />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="text-fluid-base font-semibold text-text-primary truncate">{cat.label}</h3>
-                      <p className="text-text-tertiary text-xs">{catSkills.length} technologies</p>
-                    </div>
-                  </div>
+        {/* Row 2: GenAI & Agentic AI (full width - dense category) */}
+        {renderFullWidthCategory(row2Categories[0], 1)}
 
-                  {/* Skills as Compact Badges/Pills - COLORFUL VERSION */}
-                  <div className="flex flex-wrap gap-2 relative z-10">
-                    {catSkills.map((skill, skillIndex) => (
-                      <motion.span
-                        key={skill.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: catIndex * 0.06 + skillIndex * 0.02, duration: 0.3 }}
-                      >
-                        <span 
-                          className={cn(
-                            'inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-default',
-                            'hover:shadow-lg hover:-translate-y-1 hover:scale-[1.02]'
-                          )}
-                          style={{
-                            background: getSkillGradient(skill.color),
-                            border: `1px solid ${skill.color}66`,
-                            color: skill.color,
-                            boxShadow: `0 2px 8px ${skill.color}33`,
-                          }}
-                        >
-                          {/* Skill color indicator dot */}
-                          <span 
-                            className="w-2 h-2 rounded-full flex-shrink-0"
-                            style={{ backgroundColor: skill.color, boxShadow: `0 0 6px ${skill.color}` }}
-                          />
-                          <span className="text-text-primary font-medium">{skill.name}</span>
-                          {/* Experience indicator */}
-                          <span className="px-2 py-0.5 text-[10px] font-mono font-medium rounded-full" style={{ 
-                            backgroundColor: `${skill.color}20`, 
-                            color: skill.color,
-                            border: `1px solid ${skill.color}40`
-                          }}>
-                            {skill.yearsOfExperience}yr
-                          </span>
-                        </span>
-                      </motion.span>
-                    ))}
-                  </div>
-                </Card>
-              </motion.div>
-            );
-          })}
-        </div>
+        {/* Row 3: Database & Infrastructure (full width for balance) */}
+        {renderFullWidthCategory(row3Categories[0], 2)}
 
         {/* Horizontal Rows - CS Fundamentals & AI APIs & Tools */}
-        <div className="space-y-6">
+        <div className="space-y-6 mt-6">
           {horizontalCategories.map((cat, catIndex) => {
             const catSkills = getCategorySkills(cat.key);
             if (catSkills.length === 0) return null;
@@ -212,7 +299,7 @@ export function SkillsSection() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-100px' }}
-                transition={{ delay: gridCategories.length * 0.06 + catIndex * 0.1, duration: 0.4 }}
+                transition={{ delay: 3 * 0.1 + catIndex * 0.1, duration: 0.4 }}
               >
                 <Card variant="bordered" className="p-5 transition-all duration-300 hover:border-accent-primary/30 hover:shadow-lg hover:shadow-accent-primary/5 relative overflow-hidden">
                   {/* Subtle category background gradient */}
@@ -238,7 +325,7 @@ export function SkillsSection() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        transition={{ delay: gridCategories.length * 0.06 + catIndex * 0.1 + skillIndex * 0.02, duration: 0.3 }}
+                        transition={{ delay: 3 * 0.1 + catIndex * 0.1 + skillIndex * 0.02, duration: 0.3 }}
                         className="flex items-center gap-1"
                       >
                         {skillIndex > 0 && (
