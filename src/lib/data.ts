@@ -282,7 +282,7 @@ export const education = {
   institution: 'Indian Institute of Technology (Indian School of Mines)',
   location: 'Dhanbad, Jharkhand',
   expectedGraduation: 'May 2027',
-  currentYear: '3rd Year',
+  currentYear: 'Final Year',
   cgpa: '8.5+',
   relevantCoursework: [
     'Data Structures & Algorithms',
