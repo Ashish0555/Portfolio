@@ -1,4 +1,5 @@
 # Ashish Meena — Portfolio
+ **Live @** : https://portfolio-zeta-murex-60.vercel.app/
 
 A modern, animated portfolio built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, **GSAP**, and **Three.js/React Three Fiber**.
 
